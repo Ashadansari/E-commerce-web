@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASHADMART</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <div class="logo" onclick="navigate('home')" style="cursor:pointer">🛍️ ASHADMART</div>
+    <nav>
+      <ul class="nav-links">
+        <li><span class="nav-link" onclick="navigate('home')">Home</span></li>
+        <li><span class="nav-link" onclick="navigate('shop')">Shop</span></li>
+        <li><span class="nav-link" onclick="navigate('categories')">Categories</span></li>
+        <li><span class="nav-link" onclick="navigate('about')">About</span></li>
+        <li><span class="nav-link" onclick="navigate('contact')">Contact</span></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" class="search-input" placeholder="Search products..." id="searchInput" oninput="handleSearch()">
+      </div>
+      <button class="icon-btn" id="loginBtn" onclick="showLoginModal()">👤</button>
+      <button class="icon-btn" id="cartBtn">🛒<span class="cart-count" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ========== HOME PAGE ========== -->
+<div id="page-home" class="page active">
+  <div class="banner-strip">🎉 Free shipping on orders over $50 · Use code <strong>ASHAD10</strong> for 10% off your first order!</div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">✦ NEW SEASON ARRIVALS</span>
+        <h1>Discover Premium<br>Collections For You</h1>
+        <p>Shop thousands of curated products with unbeatable prices and free fast delivery.</p>
+        <div class="hero-btns">
+          <button class="btn btn-white" onclick="navigate('shop')">🛍️ Shop Now</button>
+          <button class="btn btn-outline-white" onclick="navigate('categories')">Browse Categories</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <div class="container">
+    <div class="features-bar">
+      <div class="feature"><div class="feature-icon">🚚</div><div class="feature-text"><strong>Free Shipping</strong><span>On orders over $50</span></div></div>
+      <div class="feature"><div class="feature-icon">🔄</div><div class="feature-text"><strong>Easy Returns</strong><span>30-day return policy</span></div></div>
+      <div class="feature"><div class="feature-icon">🔒</div><div class="feature-text"><strong>Secure Payment</strong><span>100% protected</span></div></div>
+      <div class="feature"><div class="feature-icon">💬</div><div class="feature-text"><strong>24/7 Support</strong><span>Always here for you</span></div></div>
+    </div>
+  </div>
+
+  <!-- Categories Preview -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">Shop by Category</h2>
+        <span class="view-all" onclick="navigate('categories')">View All →</span>
+      </div>
+      <div class="categories" id="homeCats"></div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="section" style="background:#fff;padding:3rem 0">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">⭐ Featured Products</h2>
+        <span class="view-all" onclick="navigate('shop')">View All →</span>
+      </div>
+      <div class="products" id="homeFeatured"></div>
+    </div>
+  </section>
+
+  <!-- New Arrivals -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">🆕 New Arrivals</h2>
+        <span class="view-all" onclick="navigate('shop')">View All →</span>
+      </div>
+      <div class="products" id="homeNew"></div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter">
+    <div class="container">
+      <h2>Join Our Newsletter</h2>
+      <p>Subscribe and get 10% off your first purchase plus updates on new arrivals and exclusive deals.</p>
+      <div class="nl-form">
+        <input type="email" class="nl-input" placeholder="Enter your email address">
+        <button class="nl-btn" onclick="showToast('🎉 Subscribed successfully!')">Subscribe</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== SHOP PAGE ========== -->
+<div id="page-shop" class="page">
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom:1.5rem">🛍️ All Products</h2>
+      <div class="shop-layout">
+        <aside class="filter-sidebar">
+          <h3>Filters</h3>
+          <div class="filter-group">
+            <h4>Category</h4>
+            <label class="filter-option"><input type="checkbox" checked id="fAll" onchange="filterProducts()"> All</label>
+            <label class="filter-option"><input type="checkbox" id="fElec" onchange="filterProducts()"> Electronics</label>
+            <label class="filter-option"><input type="checkbox" id="fFash" onchange="filterProducts()"> Fashion</label>
+            <label class="filter-option"><input type="checkbox" id="fHome" onchange="filterProducts()"> Home & Living</label>
+            <label class="filter-option"><input type="checkbox" id="fBeau" onchange="filterProducts()"> Beauty</label>
+            <label class="filter-option"><input type="checkbox" id="fSport" onchange="filterProducts()"> Sports</label>
+            <label class="filter-option"><input type="checkbox" id="fBook" onchange="filterProducts()"> Books</label>
+          </div>
+          <div class="filter-group">
+            <h4>Max Price</h4>
+            <input type="range" class="price-range" min="10" max="500" value="500" id="priceRange" oninput="updatePrice()">
+            <div class="price-display">Up to $<span id="priceVal">500</span></div>
+          </div>
+          <div class="filter-group">
+            <h4>Rating</h4>
+            <label class="filter-option"><input type="radio" name="rating" value="0" checked onchange="filterProducts()"> All ratings</label>
+            <label class="filter-option"><input type="radio" name="rating" value="4" onchange="filterProducts()"> ⭐ 4+ Stars</label>
+            <label class="filter-option"><input type="radio" name="rating" value="4.5" onchange="filterProducts()"> ⭐ 4.5+ Stars</label>
+          </div>
+          <button class="apply-filter" onclick="resetFilters()">Reset Filters</button>
+        </aside>
+        <div class="shop-main">
+          <div class="sort-bar">
+            <span id="productCount">Showing all products</span>
+            <select class="sort-select" onchange="sortProducts(this.value)">
+              <option value="default">Sort: Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Rated</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+          <div class="products" id="shopProducts"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== CATEGORIES PAGE ========== -->
+<div id="page-categories" class="page">
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom:1.5rem">🗂️ All Categories</h2>
+      <div class="categories" id="allCats" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))"></div>
+      <div id="catProducts" style="margin-top:2.5rem"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== PRODUCT DETAIL PAGE ========== -->
+<div id="page-product" class="page">
+  <div class="container">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="pd-layout" id="productDetail"></div>
+    <div style="padding-bottom:3rem">
+      <div class="section-head"><h2 class="section-title">Related Products</h2></div>
+      <div class="products" id="relatedProducts"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ABOUT PAGE ========== -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div class="container">
+      <h1>About ASHADMART</h1>
+      <p>Premium shopping destination for the modern consumer. Quality products, exceptional service, timeless style.</p>
+    </div>
+  </div>
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:1rem">Our Story</h2>
+        <p style="color:#4b5563;line-height:1.8;margin-bottom:1rem">Founded in 2020, ASHADMART started as a small online store with a big dream — to make premium products accessible to everyone, everywhere. Today we serve over 100,000 happy customers across 50+ countries.</p>
+        <p style="color:#4b5563;line-height:1.8;margin-bottom:1.5rem">We curate only the best products from trusted suppliers, ensuring every purchase meets our high quality standards. Our commitment is simple: great products, fair prices, outstanding service.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+          <div style="background:var(--light);border-radius:.6rem;padding:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--primary)">100K+</div><div style="font-size:.8rem;color:var(--gray)">Happy Customers</div></div>
+          <div style="background:var(--light);border-radius:.6rem;padding:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--primary)">5000+</div><div style="font-size:.8rem;color:var(--gray)">Products</div></div>
+          <div style="background:var(--light);border-radius:.6rem;padding:1rem;text-align:center"><div style="font-size:1.5rem;font-weight:800;color:var(--primary)">50+</div><div style="font-size:.8rem;color:var(--gray)">Countries</div></div>
+        </div>
+      </div>
+      <div class="about-img">🏪</div>
+    </div>
+    <h2 class="section-title" style="margin-bottom:1.5rem">Meet the Team</h2>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">AK</div><h4>Ashad Khan</h4><p>Founder & CEO</p></div>
+      <div class="team-card"><div class="team-avatar">SR</div><h4>Sara Rafi</h4><p>Head of Design</p></div>
+      <div class="team-card"><div class="team-avatar">MN</div><h4>Mike Nair</h4><p>CTO</p></div>
+      <div class="team-card"><div class="team-avatar">PJ</div><h4>Priya Joshi</h4><p>Marketing Lead</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CONTACT PAGE ========== -->
+<div id="page-contact" class="page">
+  <div class="about-hero" style="background:linear-gradient(135deg,#064e3b,#10b981)">
+    <div class="container"><h1>Contact Us</h1><p>Have a question or need help? We'd love to hear from you.</p></div>
+  </div>
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Get In Touch</h2>
+        <p>Our support team is available 24/7 to help you with any questions about orders, products, or anything else.</p>
+        <div class="contact-detail"><div class="icon">📍</div><div><strong>Address</strong><span>123 Commerce Street, Mumbai, India 400001</span></div></div>
+        <div class="contact-detail"><div class="icon">📞</div><div><strong>Phone</strong><span>+91 98765 43210</span></div></div>
+        <div class="contact-detail"><div class="icon">✉️</div><div><strong>Email</strong><span>support@ashadmart.com</span></div></div>
+        <div class="contact-detail"><div class="icon">🕐</div><div><strong>Hours</strong><span>Mon–Sat, 9am–6pm IST</span></div></div>
+      </div>
+      <div class="contact-form">
+        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.2rem">Send a Message</h3>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="John"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe"></div>
+        </div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="john@email.com"></div>
+        <div class="form-group"><label>Subject</label>
+          <select><option>Order Issue</option><option>Product Inquiry</option><option>Returns & Refunds</option><option>General Question</option><option>Partnership</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea placeholder="How can we help you?"></textarea></div>
+        <button class="submit-btn" onclick="showToast('✅ Message sent! We\'ll reply within 24 hours.')">Send Message</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-hd">
+    <h3 id="cartTitle">Your Cart (0)</h3>
+    <span class="close-btn" id="closeCart">×</span>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-ft">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="checkout-btn" onclick="showToast('🎉 Order placed! Thank you for shopping with ASHADMART.')">Proceed to Checkout</button>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- LOGIN MODAL -->
+<div class="login-modal" id="loginModal">
+  <div class="login-content">
+    <div class="login-hd">
+      <h3>Welcome Back</h3>
+      <span class="close-btn" id="closeLogin">×</span>
+    </div>
+    <div class="login-body">
+      <div id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="Your password">
+        </div>
+        <button class="login-btn" onclick="login()">Login</button>
+        <p class="login-note">Demo: Use any email and password to login</p>
+      </div>
+      <div id="userInfo" style="display:none">
+        <div class="user-avatar">👤</div>
+        <div class="user-details">
+          <h4 id="userName">Welcome!</h4>
+          <p id="userEmail"></p>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>🛍️ ASHADMART</h3>
+        <p>Premium shopping destination for the modern consumer. Quality products, exceptional service, timeless style since 2020.</p>
+        <div class="social-row">
+          <div class="soc-btn">FB</div><div class="soc-btn">TW</div><div class="soc-btn">IG</div><div class="soc-btn">YT</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Shop</h3>
+        <div class="footer-links">
+          <a onclick="navigate('shop')">All Products</a>
+          <a onclick="navigate('shop')">New Arrivals</a>
+          <a onclick="navigate('shop')">Best Sellers</a>
+          <a onclick="navigate('shop')">On Sale</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Customer Care</h3>
+        <div class="footer-links">
+          <a onclick="navigate('contact')">Contact Us</a>
+          <a onclick="navigate('contact')">FAQs</a>
+          <a onclick="navigate('about')">Shipping & Returns</a>
+          <a>Size Guide</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <div class="footer-links">
+          <a onclick="navigate('about')">About Us</a>
+          <a>Privacy Policy</a>
+          <a>Terms & Conditions</a>
+          <a>Blog</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ASHADMART. All rights reserved.</span>
+      <span>💳 Visa · Mastercard · PayPal · UPI</span>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
